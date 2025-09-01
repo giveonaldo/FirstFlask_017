@@ -1,44 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Data Siswa</title>
-	<script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100 min-h-screen">
-	<h1 class="text-2xl font-bold text-center mt-8 mb-6">Data Siswa</h1>
-	<div class="max-w-xl mx-auto mb-8 text-center">
-	<a href="{{ url_for('add_html') }}" class="inline-block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah Siswa</a>
-	</div>
-	<div class="relative overflow-x-auto max-w-4xl mx-auto">
-		<table class="w-full text-sm text-left rtl:text-right text-gray-500">
-			<thead class="text-xs text-gray-700 uppercase bg-gray-50">
-				<tr>
-					<th scope="col" class="px-6 py-3">Nama</th>
-					<th scope="col" class="px-6 py-3">Tempat</th>
-					<th scope="col" class="px-6 py-3">NIM</th>
-					<th scope="col" class="px-6 py-3">Usia</th>
-					<th scope="col" class="px-6 py-3">Aksi</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for s in siswa %}
-				<tr class="bg-white border-b border-gray-200">
-					<th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ s['nama'] }}</th>
-					<td class="px-6 py-4">{{ s['Tempat'] }}</td>
-					<td class="px-6 py-4">{{ s['NIM'] }}</td>
-					<td class="px-6 py-4">{{ s['Usia'] }}</td>
-					<td class="px-6 py-4 flex gap-2">
-						<a href="{{ url_for('edit_siswa', id=s['id']) }}" class="text-blue-600 hover:underline">Edit</a>
-						<form method="POST" action="{{ url_for('delete_siswa', id=s['id']) }}" style="display:inline;">
-							<button type="submit" onclick="return confirm('Hapus data?')" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer">Delete</button>
-						</form>
-					</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Siswa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <div class="flex justify-between items-center max-w-4xl mx-auto mt-8 mb-6">
+      <h1 class="text-2xl font-bold">Data Siswa</h1>
+      <div class="flex gap-4">
+  <a href="{{ url_for('add_html') }}" class="inline-block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Tambah Siswa</a>
+        <form method="POST" action="{{ url_for('logout') }}">
+          <button type="submit" class="text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">Logout</button>
+        </form>
+      </div>
+    </div>
+    <div class="relative overflow-x-auto max-w-4xl mx-auto">
+      <table class="w-full text-sm text-left rtl:text-right text-gray-500">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+          <tr>
+            <th scope="col" class="px-6 py-3">Nama</th>
+            <th scope="col" class="px-6 py-3">Tempat</th>
+            <th scope="col" class="px-6 py-3">NIM</th>
+            <th scope="col" class="px-6 py-3">Usia</th>
+            <th scope="col" class="px-6 py-3">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if siswa|length == 0 %}
+            <tr>
+              <td colspan="5" class="text-center py-8 text-gray-500">Tidak ada data, silahkan tambahkan data!!</td>
+            </tr>
+          {% else %}
+            {% for s in siswa %}
+              <tr class="bg-white border-b border-gray-200">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{{ s.nama }}</th>
+                <td class="px-6 py-4">{{ s.Tempat }}</td>
+                <td class="px-6 py-4">{{ s.NIM }}</td>
+                <td class="px-6 py-4">{{ s.Usia }}</td>
+                <td class="px-6 py-4 flex gap-2">
+                  <a href="{{ url_for('edit_siswa', id=s.id) }}" class="text-blue-600 hover:underline">Edit</a>
+                  <form method="POST" action="{{ url_for('delete_siswa', id=s.id) }}" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Hapus data?')" class="text-red-600 hover:underline bg-transparent border-none cursor-pointer">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </body>
 </html>
